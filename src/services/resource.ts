@@ -1,6 +1,9 @@
 import { IBooking } from "@app/models/Booking";
-import { IShiftConfigs } from "@app/services/booking";
+import { BookingService, IShiftConfigs } from "@app/services/booking";
 import { SlotGrid } from "@app/utils/constant";
+import { updateTime } from "@app/utils/datetime";
+import { startOfDay } from "date-fns";
+import isBefore from "date-fns/isBefore";
 
 interface IGetAvailabilityProps {
   minDate: Date;
@@ -19,20 +22,37 @@ const getAvailability = (props: IGetAvailabilityProps): Date[] => {
     slotMinutes,
     maxOverlaps,
     slotGrid,
-    shiftConfigs,
+    shiftConfigs: {
+      beginHour,
+      beginMinute,
+      untilHour,
+      untilMinute
+    },
     bookings
   } = props;
 
-  console.log({
-    minDate,
-    maxDate,
-    slotMinutes,
-    maxOverlaps,
-    slotGrid,
-    shiftConfigs,
-    bookings
-  });
-  return [];
+  const availabilities: Date[] = [];
+
+  const beginningTime: Date = startOfDay(updateTime(minDate, {
+    hours: beginHour,
+    minutes: beginMinute
+  }));
+
+  const completionTime: Date = startOfDay(updateTime(maxDate, {
+    hours: untilHour,
+    minutes: untilMinute
+  }));
+
+  let time: Date = new Date(beginningTime.getTime());
+
+  while (isBefore(time, completionTime)) {
+    const endTime = updateTime(time, { minutes: slotMinutes });
+    if (!BookingService.hasOverlap(time, endTime, bookings, maxOverlaps)) {
+      availabilities.push(time);
+    }
+    time = updateTime(time, { minutes: slotGrid });
+  }
+  return availabilities;
 };
 
 export const ResourceService = {

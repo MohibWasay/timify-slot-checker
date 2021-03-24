@@ -1,4 +1,6 @@
+import { IBooking } from "@app/models/Booking";
 import { IResourceShift } from "@app/models/Resource";
+import { isBetween } from "@app/utils/datetime";
 import { startOfDay, addHours, addMinutes } from "date-fns";
 
 export interface IShiftConfigs {
@@ -15,7 +17,7 @@ const parseShift = (shift: IResourceShift): IShiftConfigs => {
   return { beginHour, beginMinute, untilHour, untilMinute };
 };
 
-const getBeginAndUntilTime = (orignalDate: Date, shiftConfigs: IShiftConfigs): [Date, Date] => {
+const getDuration = (orignalDate: Date, shiftConfigs: IShiftConfigs): [Date, Date] => {
   const { beginHour, beginMinute, untilHour, untilMinute } = shiftConfigs;
   const date: Date = startOfDay(orignalDate);
   const beginTime: Date = addMinutes(addHours(date, beginHour), beginMinute);
@@ -24,7 +26,22 @@ const getBeginAndUntilTime = (orignalDate: Date, shiftConfigs: IShiftConfigs): [
   return [beginTime, untilTime];
 };
 
+export const hasOverlap = (
+  beginTime: Date,
+  untilTime: Date,
+  bookings: IBooking[],
+  minOverlaps: number = 1,
+) => {
+  return bookings.filter(
+    (booking) => (
+      isBetween(beginTime, [booking.start, booking.end]) ||
+      isBetween(untilTime, [booking.start, booking.end])
+    )
+  ).length > minOverlaps - 1;
+}
+
 export const BookingService = {
   parseShift,
-  getBeginAndUntilTime
+  getDuration,
+  hasOverlap
 };
