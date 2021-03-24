@@ -1,5 +1,7 @@
 
-# TypeScript API with TypeORM
+# Timify Slot Checker
+
+Timify Slot checker checks for availablility and returns starting dates all the available slots that can be booked for a particular resource.
 
 ## Run this project
 
