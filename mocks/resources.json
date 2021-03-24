@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "name": "Alex Jones",
+      "shifts": [
+        {
+          "begin": "08:00",
+          "until": "16:00",
+          "active": true
+        }
+      ]
+    },
+    {
+      "name": "Meghan Andrews",
+      "shifts": [
+        {
+          "begin": "08:00",
+          "until": "16:00",
+          "active": true
+        }
+      ]
+    }
+  ]
+}

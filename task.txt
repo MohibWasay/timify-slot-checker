@@ -1,0 +1,42 @@
+Starting from a collection of `events`:
+`events = [{ id: ID, begin: DateTime, end: DateTime, … }]`
+that are retrieved from a database
+​
+and a shift daily plan:
+​
+`shift = { from: Time, until: Time }`
+where from and until are the hours and minutes when a resource is available each day, 
+​
+Implement a function 
+​
+`getAvailability(minDate: DateTime, maxDate: DateTime, slotMinutes: Int, maxOverlaps: Int, slotGrid: Int): [DateTime]`
+which returns all possible starting dates of events that can be booked for that resource between `minDate` and `maxDate`. 
+​
+- the events will have a duration of exact `slotMinutes`.
+- `maxOverlaps` is the maximum allowed number of events overlapping in any given time, defaults to 1, meaning events must not overlap
+- The `slotGrid` is a number [5, 10, 15, 30, 60] representing the "snap to grid" feature of the event booking system, the minute of the starting date of the event must be divisible with `snapToGrid`.
+if `slotGrid = 30` for example we can only book at minutes 00 and 30. 
+​
+1. Provide an implementation for the `getAvailability` function in JS
+2. How would you implement a caching mechanism for `getAvailability` - to be discussed in the call next week
+Collapse
+
+
+00:00 - 01:00
+
+
+==== Request ====
+minDate: DateTime - today
+maxDate: DateTime - today
+slotMinutes: Int - 15
+maxOverlaps: Int - 1
+slotGrid: Int - 10
+
+==== Response ====
+[
+  "00:00-00:15",
+  "00:10-00:25",
+  "00:20-00:35",
+  "00:30-00:45",
+  "00:40-00:55"
+]
