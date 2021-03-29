@@ -42,7 +42,11 @@ describe('BookingService', () => {
   });
 
   it('erwarten Sie, dass es eine letzte verfügbare Zeit für den Tag ist', () => {
-    const [beginTime, untilTime] = [new Date(2020, 7, 16, 10, 30, 0), new Date(2020, 7, 16, 11, 30, 0)];
+    const [beginTime, untilTime] = [
+      new Date(2020, 7, 16, 10, 30, 0),
+      new Date(2020, 7, 16, 11, 30, 0)
+    ];
+
     const bookings = [
       {
         _id: '1',
@@ -65,5 +69,35 @@ describe('BookingService', () => {
     ]
 
     expect(BookingService.hasOverlap(beginTime, untilTime, bookings)).toBe(false);
+  });
+
+  it('erwarten Sie, dass es eine letzte verfügbare Zeit für den Tag ist', () => {
+    const [beginTime, untilTime] = [
+      new Date(2020, 7, 16, 10, 30, 0),
+      new Date(2020, 7, 16, 11, 30, 0)
+    ];
+
+    const bookings = [
+      {
+        _id: '1',
+        resourceId: '1',
+        start: new Date(2020, 7, 16, 6, 45, 0),
+        end: new Date(2020, 7, 16, 7, 0, 0)
+      },
+      {
+        _id: '2',
+        resourceId: '1',
+        start: new Date(2020, 7, 16, 9, 45, 0),
+        end: new Date(2020, 7, 16, 10, 15, 0)
+      },
+      {
+        _id: '3',
+        resourceId: '1',
+        start: new Date(2020, 7, 16, 10, 15, 0),
+        end: new Date(2020, 7, 16, 10, 40, 0)
+      }
+    ]
+
+    expect(BookingService.hasOverlap(beginTime, untilTime, bookings)).toBe(true);
   });
 });
