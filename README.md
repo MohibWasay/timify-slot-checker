@@ -17,8 +17,19 @@ PREPOPULATE_DATA=true # if this is set to true, it will generate random bookings
 ```
 yarn
 ```
+
+- Start the server:
+```
+yarn start
+```
+
 - Build and run the app:
 ```
 yarn build
 yarn start:prod
+```
+
+- Run the tests:
+```
+yarn test
 ```

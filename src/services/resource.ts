@@ -5,7 +5,7 @@ import { updateTime } from "@app/utils/datetime";
 import { startOfDay } from "date-fns";
 import isBefore from "date-fns/isBefore";
 
-interface IGetAvailabilityProps {
+const getAvailability = (props: {
   minDate: Date;
   maxDate: Date;
   shiftConfigs: IShiftConfigs;
@@ -13,9 +13,7 @@ interface IGetAvailabilityProps {
   maxOverlaps: number;
   slotGrid: SlotGrid;
   bookings: IBooking[];
-}
-
-const getAvailability = (props: IGetAvailabilityProps): Date[] => {
+}): Date[] => {
   const {
     minDate,
     maxDate,
@@ -33,24 +31,34 @@ const getAvailability = (props: IGetAvailabilityProps): Date[] => {
 
   const availabilities: Date[] = [];
 
-  const beginningTime: Date = startOfDay(updateTime(minDate, {
+  const beginningTime: Date = updateTime(startOfDay(minDate), {
     hours: beginHour,
     minutes: beginMinute
-  }));
+  });
 
-  const completionTime: Date = startOfDay(updateTime(maxDate, {
+  const completionTime: Date = updateTime(startOfDay(maxDate), {
     hours: untilHour,
     minutes: untilMinute
-  }));
+  });
 
   let time: Date = new Date(beginningTime.getTime());
 
   while (isBefore(time, completionTime)) {
     const endTime = updateTime(time, { minutes: slotMinutes });
-    if (!BookingService.hasOverlap(time, endTime, bookings, maxOverlaps)) {
+    const hasOverlap: boolean = BookingService.hasOverlap(time, endTime, bookings, maxOverlaps);
+
+    if (!hasOverlap) {
       availabilities.push(time);
     }
+
     time = updateTime(time, { minutes: slotGrid });
+    if (BookingService.isLastAvailableSlot(time, { untilHour, untilMinute })) {
+      time = updateTime(startOfDay(time), {
+        days: 1,
+        hours: beginHour,
+        minutes: beginMinute
+      });
+    }
   }
   return availabilities;
 };
