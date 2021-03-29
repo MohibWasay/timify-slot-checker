@@ -52,7 +52,7 @@ const getAvailability = (props: {
     }
 
     time = updateTime(time, { minutes: slotGrid });
-    if (BookingService.isLastAvailableSlot(time, { untilHour, untilMinute })) {
+    if (BookingService.isLastAvailableTime(time, { untilHour, untilMinute })) {
       time = updateTime(startOfDay(time), {
         days: 1,
         hours: beginHour,

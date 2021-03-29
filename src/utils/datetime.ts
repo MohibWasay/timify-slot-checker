@@ -6,9 +6,11 @@ interface TimeOptions {
   minutes?: number
 };
 
-export const isBetween = (date: Date, [start, end]: Date[]): boolean => {
+export const isBetween = (date: Date, [start, end]: Date[], options = { inclusive: false }): boolean => {
   const time = date.getTime();
-  return time >= start.getTime() && time <= end.getTime();
+  return options.inclusive 
+    ? time >= start.getTime() && time <= end.getTime()
+    : time > start.getTime() && time < end.getTime();
 };
 
 export const updateTime = (date: Date, options: TimeOptions) => {
@@ -19,4 +21,9 @@ export const updateTime = (date: Date, options: TimeOptions) => {
   updatedDate = options.minutes ? addMinutes(updatedDate, options.minutes) : updatedDate;
 
   return updatedDate;
+}
+
+export const DatetimeService = {
+  updateTime,
+  isBetween
 }

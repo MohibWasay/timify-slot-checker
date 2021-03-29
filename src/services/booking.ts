@@ -31,13 +31,13 @@ const getDuration = (orignalDate: Date, shiftConfigs: IShiftConfigs): [Date, Dat
   return [beginTime, untilTime];
 };
 
-export const isLastAvailableSlot = (time: Date, shiftConfigs: IShiftUntilConfigs): boolean => {
+export const isLastAvailableTime = (time: Date, shiftConfigs: IShiftUntilConfigs): boolean => {
   const lastAvailableTime = updateTime(startOfDay(time), {
     hours: shiftConfigs.untilHour,
     minutes: shiftConfigs.untilMinute
   });
   return lastAvailableTime.getTime() <= time.getTime();
-}
+};
 
 export const hasOverlap = (
   beginTime: Date,
@@ -53,11 +53,11 @@ export const hasOverlap = (
       isBetween(booking.end, [beginTime, untilTime])
     )
   ).length > minOverlaps - 1;
-}
+};
 
 export const BookingService = {
   parseShift,
   getDuration,
-  isLastAvailableSlot,
+  isLastAvailableTime,
   hasOverlap
 };

@@ -1,0 +1,5 @@
+{ 
+  "moduleNameMapper": {
+    "^@app/(.*)$": "<rootDir>/$1"
+  }
+}
