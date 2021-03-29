@@ -47,22 +47,19 @@ export const getAvailability = (req: Request, res: Response) => {
 
         const availabilities: Date[] = ResourceService.getAvailability({
           minDate,
+          slotMinutes,
           maxDate,
           bookings,
-          slotMinutes,
           maxOverlaps,
           slotGrid,
           shiftConfigs: BookingService.parseShift(activeShift),
         });
 
-        res.send({
-          success: true,
-          availabilities
-        })
+        res.send({ success: true, availabilities })
       })
 
   } catch (error) {
-
+    res.send({ success: false, message: error })
   }
 };
 

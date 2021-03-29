@@ -5,14 +5,13 @@ Timify Slot checker checks for availablility and returns starting dates all the 
 
 ## Run this project
 
-- Install the dependencies:
-```
-yarn
-```
-- Run the app:
-```
-yarn start:dev
-```
+- Install node.js, mongodb, redis (optional)
+- Create and .env file on the root of the project and add the following 
+````
+DATABASE_URL=mongodb://localhost/timifydb
+PREPOPULATE_DATA=true # if this is set to true, it will generate random bookings and events, set to true only for first time
+````
+
 ## Build and Run
 - Install the dependencies:
 ```

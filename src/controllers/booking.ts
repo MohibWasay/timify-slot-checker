@@ -17,13 +17,12 @@ export const getAvailability = (req: Request, res: Response) => {
   try {
     const { query, params } = req;
 
-    const slotMinutes = Number(query.slotMinutes);
-    const maxOverlaps = Number(query.maxOverlaps);
-    const slotGrid = Number(query.slotGrid);
-
-    const minDate = parse(query.minDate as string, 'dd-MM-yyyy', new Date());
-    const maxDate = parse(query.maxDate as string, 'dd-MM-yyyy', new Date());
-
+    const slotMinutes: number = Number(query.slotMinutes);
+    const maxOverlaps: number = Number(query.maxOverlaps);
+    const minDate: Date = parse(query.minDate as string, 'dd-MM-yyyy', new Date());
+    const maxDate: Date = parse(query.maxDate as string, 'dd-MM-yyyy', new Date());
+    const slotGrid: number = Number(query.slotGrid);
+    
     Promise.all([
       Resource.findById(params.id),
       Booking.find({
